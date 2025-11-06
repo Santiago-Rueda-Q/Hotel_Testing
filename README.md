@@ -141,33 +141,33 @@ La aplicación estará disponible en: **http://localhost:5000**
 cd metrics
 python sistema_metricas.py
 ```
-### Sistema
-** imagen 1 ingreso de habitacion **
+## Sistema
+### imagen 1 ingreso de habitacion 
 
-<img width="942" height="536" alt="image" src="https://github.com/user-attachments/assets/4fb4c839-0168-4ae8-9725-eb8787783158" />
+<img width="1234" height="913" alt="image" src="https://github.com/user-attachments/assets/8aa2066f-8b35-4ab0-a21f-4da8ce213b3f" />
 
-** imagen 2 Registro de habitacion **
+### imagen 2 Registro de habitacion 
 
-<img width="885" height="474" alt="image" src="https://github.com/user-attachments/assets/a9c8256a-749d-42da-9ac3-c292a92d15a1" />
+<img width="1290" height="889" alt="image" src="https://github.com/user-attachments/assets/68d4d38e-6070-42c3-816e-0a914aad6081" />
 
-** imagen 3 pago **
+### imagen 3 pago 
 
-<img width="913" height="248" alt="image" src="https://github.com/user-attachments/assets/e476aa64-cbad-4d29-ac29-376359d6202a" />
+<img width="1241" height="602" alt="image" src="https://github.com/user-attachments/assets/1c470583-6fd0-4ebb-9a7e-1cdabf306543" />
 
-** imagen 4 Pago **
+### imagen 4 Pago 
 
-<img width="882" height="239" alt="image" src="https://github.com/user-attachments/assets/364b38d1-f147-4e63-94b0-9ff2f0cbe608" />
+<img width="1361" height="329" alt="image" src="https://github.com/user-attachments/assets/66c488c5-3f56-4c55-9702-6a5ed908ac5d" />
 
-** imagen 5 Registro **
+### imagen 5 Registro 
 
-<img width="859" height="394" alt="image" src="https://github.com/user-attachments/assets/9d514faf-eeab-46a1-9645-8e638afadffc" />
+<img width="1269" height="815" alt="image" src="https://github.com/user-attachments/assets/d466059b-d9fe-4a50-a84d-805ab9d07867" />
 
-** imagen 6 Inicio de sesion **
+### imagen 6 Inicio de sesion 
 
-<img width="866" height="397" alt="image" src="https://github.com/user-attachments/assets/693d3324-4f79-4b7c-93ac-c2a7659fa010" />
+<img width="1246" height="814" alt="image" src="https://github.com/user-attachments/assets/c6e3339b-e48c-453e-b214-c910f3b01eb4" />
 
 
 ### Salida del Sistema del dashboard
 
-<img width="1212" height="903" alt="image" src="https://github.com/user-attachments/assets/325b1b60-f0ea-4ca7-9643-b0a1802c4c69" />
-<img width="1158" height="521" alt="image" src="https://github.com/user-attachments/assets/21ae526b-e0a2-465e-be80-1b87e45bb8c6" />
+<img width="851" height="733" alt="image" src="https://github.com/user-attachments/assets/d6ef8826-f3fb-438f-8568-31108bd7c399" />
+<img width="808" height="531" alt="image" src="https://github.com/user-attachments/assets/d3fe7315-aae0-4718-9162-eba08b24ea3a" />
