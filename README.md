@@ -152,7 +152,7 @@ python sistema_metricas.py
 
 ### imagen 3 pago 
 
-<img width="1241" height="602" alt="image" src="https://github.com/user-attachments/assets/1c470583-6fd0-4ebb-9a7e-1cdabf306543" />
+<img width="625" height="784" alt="image" src="https://github.com/user-attachments/assets/368cbe52-a388-4cec-a551-b74748080673" />
 
 ### imagen 4 Pago 
 
