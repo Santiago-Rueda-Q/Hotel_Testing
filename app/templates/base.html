@@ -3,68 +3,395 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Reserva</title>
+    <title>⚡ Hotel Cyber Reserva ⚡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
+        /* ============================================
+           CYBERPUNK FLASH MESSAGES
+           ============================================ */
         .flash-messages {
-            margin: 20px auto;
-            max-width: 800px;
+            position: fixed;
+            top: 120px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 400px;
+            animation: slideInRight 0.5s ease-out;
         }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
         .flash {
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            font-weight: bold;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            animation: flashAppear 0.5s ease-out;
+            font-family: 'Rajdhani', sans-serif;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
         }
+
+        @keyframes flashAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.9);
+            }
+            50% {
+                transform: translateY(5px) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .flash::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            animation: loadingBar 2s ease-in-out infinite;
+        }
+
+        .flash::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes loadingBar {
+            0%, 100% { transform: translateY(-100%); }
+            50% { transform: translateY(100%); }
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
         .flash.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: rgba(0, 255, 0, 0.15);
+            border: 2px solid #0f0;
+            color: #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), 0 5px 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 10px #0f0;
         }
+
+        .flash.success::before {
+            background: #0f0;
+            box-shadow: 0 0 10px #0f0;
+        }
+
         .flash.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: rgba(255, 0, 0, 0.15);
+            border: 2px solid #f00;
+            color: #f00;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5), 0 5px 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 10px #f00;
         }
+
+        .flash.error::before {
+            background: #f00;
+            box-shadow: 0 0 10px #f00;
+        }
+
+        .flash.info {
+            background: rgba(0, 255, 255, 0.15);
+            border: 2px solid #0ff;
+            color: #0ff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 5px 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 10px #0ff;
+        }
+
+        .flash.info::before {
+            background: #0ff;
+            box-shadow: 0 0 10px #0ff;
+        }
+
+        .flash-icon {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 20px;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        /* ============================================
+           CYBERPUNK USER INFO
+           ============================================ */
         .user-info {
-            float: right;
-            margin-right: 20px;
-            color: #333;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #0ff;
+            color: #0ff;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+            animation: userPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes userPulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+            }
+        }
+
+        .user-info::before {
+            content: '👤';
+            font-size: 18px;
+            filter: drop-shadow(0 0 10px #0ff);
+        }
+
+        .user-info::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: scanline 3s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%) rotate(45deg); }
+            100% { transform: translateY(100%) rotate(45deg); }
+        }
+
+        /* ============================================
+           ENHANCED HEADER
+           ============================================ */
+        header h1::before {
+            content: 'HOTEL CYBER RESERVA';
+        }
+
+        /* ============================================
+           CLOSE BUTTON FOR FLASH
+           ============================================ */
+        .flash-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: none;
+            border: 2px solid currentColor;
+            color: inherit;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 900;
+            line-height: 1;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+        }
+
+        .flash-close:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .flash-close::before {
+            content: '✕';
+            display: block;
+        }
+
+        /* ============================================
+           MOBILE RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .flash-messages {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+
+            .user-info {
+                display: block;
+                text-align: center;
+                margin: 10px 0;
+                width: 100%;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+
+            nav a, .user-info {
+                flex: 1 1 auto;
+                min-width: 150px;
+            }
+        }
+
+        /* ============================================
+           SCROLL INDICATOR
+           ============================================ */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #0ff, #f0f, #ff0);
+            z-index: 10000;
+            box-shadow: 0 0 10px #0ff;
+            transition: width 0.1s ease;
+        }
+
+        /* ============================================
+           PAGE TRANSITION
+           ============================================ */
+        @keyframes pageLoad {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        main {
+            animation: pageLoad 0.5s ease-out;
         }
     </style>
 </head>
 <body>
+    <!-- Scanlines Effect -->
+    <div class="scanlines"></div>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <!-- Header -->
     <header>
-        <h1>Hotel Reserva</h1>
+        <h1 data-text="HOTEL CYBER RESERVA">⚡ HOTEL CYBER RESERVA ⚡</h1>
+        <p class="subtitle">// FUTURISTIC BOOKING SYSTEM //</p>
         <nav>
-            <a href="{{ url_for('index') }}">Inicio</a>
+            <a href="{{ url_for('index') }}">🏠 INICIO</a>
             {% if session.get('user_id') %}
-                <span class="user-info">Usuario: {{ session.get('username') }}</span>
-                <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+                <span class="user-info">{{ session.get('username') }}</span>
+                <a href="{{ url_for('logout') }}">🚪 CERRAR SESIÓN</a>
             {% else %}
-                <a href="{{ url_for('register') }}">Registrar</a>
-                <a href="{{ url_for('login') }}">Iniciar sesión</a>
+                <a href="{{ url_for('register') }}">📝 REGISTRAR</a>
+                <a href="{{ url_for('login') }}">🔐 INICIAR SESIÓN</a>
             {% endif %}
         </nav>
     </header>
     
-    <div class="flash-messages">
+    <!-- Flash Messages -->
+    <div class="flash-messages" id="flashMessages">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="flash {{ category }}">{{ message }}</div>
+                    <div class="flash {{ category }}">
+                        <span class="flash-icon">
+                            {% if category == 'success' %}✓{% elif category == 'error' %}✗{% else %}ℹ{% endif %}
+                        </span>
+                        {{ message }}
+                        <button class="flash-close" onclick="this.parentElement.remove()"></button>
+                    </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
     </div>
     
+    <!-- Main Content -->
     <main>
         {% block content %}
         {% endblock %}
     </main>
     
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Hotel Reserva</p>
+        <p>⚡ &copy; 2025 HOTEL CYBER RESERVA // ALL SYSTEMS OPERATIONAL ⚡</p>
     </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Auto-dismiss flash messages
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashes = document.querySelectorAll('.flash');
+            flashes.forEach((flash, index) => {
+                setTimeout(() => {
+                    flash.style.animation = 'flashAppear 0.5s ease-out reverse';
+                    setTimeout(() => flash.remove(), 500);
+                }, 5000 + (index * 500));
+            });
+        });
+
+        // Scroll indicator
+        window.addEventListener('scroll', function() {
+            const scrollIndicator = document.getElementById('scrollIndicator');
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (window.scrollY / scrollHeight) * 100;
+            scrollIndicator.style.width = scrollPercent + '%';
+        });
+
+        // Add scanlines if not exists
+        if (!document.querySelector('.scanlines')) {
+            const scanlines = document.createElement('div');
+            scanlines.className = 'scanlines';
+            document.body.prepend(scanlines);
+        }
+
+        // Keyboard shortcuts (Easter egg)
+        let konamiCode = [];
+        const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+        
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > 10) konamiCode.shift();
+            
+            if (konamiCode.join(',') === konamiSequence.join(',')) {
+                document.body.style.animation = 'glitchEffect 0.5s';
+                const flash = document.createElement('div');
+                flash.className = 'flash success';
+                flash.innerHTML = '<span class="flash-icon">🎮</span>CHEAT CODE ACTIVATED!<button class="flash-close" onclick="this.parentElement.remove()"></button>';
+                document.getElementById('flashMessages').appendChild(flash);
+                setTimeout(() => flash.remove(), 3000);
+                konamiCode = [];
+            }
+        });
+
+        // Console Easter egg
+        console.log('%c⚡ HOTEL CYBER RESERVA ⚡', 'color: #0ff; font-size: 24px; font-weight: bold; text-shadow: 0 0 10px #0ff;');
+        console.log('%c// SYSTEM ACCESS GRANTED //', 'color: #f0f; font-size: 14px; font-weight: bold;');
+        console.log('%cWelcome to the Cyberpunk Hotel System!', 'color: #0f0; font-size: 12px;');
+    </script>
 </body>
 </html>

@@ -1,1 +1,648 @@
-{% extends 'base.html' %}{% block content %}<h2>Pago</h2><form method='post' action='{{ url_for('pay') }}'><input type='hidden' name='booking_id' value='{{ booking_id }}'><button>Pagar</button></form>{% endblock %}
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="scanlines"></div>
+
+<style>
+/* ============================================
+   CYBERPUNK PAYMENT PAGE - SPECIFIC STYLES
+   ============================================ */
+.payment-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.payment-header {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: glitchIn 1s ease-out;
+}
+
+@keyframes glitchIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px) skewX(-5deg);
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) skewX(0);
+        filter: blur(0);
+    }
+}
+
+.payment-header h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 900;
+    color: var(--neon-cyan);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: var(--glow-cyan);
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.payment-header h2::before {
+    content: 'PAYMENT';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--neon-magenta);
+    text-shadow: 2px 2px 0 var(--neon-magenta);
+    opacity: 0.3;
+    animation: glitchEffect 2s infinite;
+}
+
+.payment-subtitle {
+    color: var(--neon-yellow);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px var(--neon-yellow);
+}
+
+/* Payment Info Panel */
+.payment-info {
+    background: rgba(10, 14, 39, 0.9);
+    border: 3px solid var(--neon-cyan);
+    padding: 35px;
+    margin-bottom: 40px;
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5), inset 0 0 30px rgba(0, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+.payment-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+    animation: shine 3s infinite;
+}
+
+.payment-info h3 {
+    color: var(--neon-magenta);
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    text-shadow: var(--glow-magenta);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    margin: 12px 0;
+    background: rgba(0, 255, 255, 0.05);
+    border-left: 4px solid var(--neon-cyan);
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.info-row:hover {
+    background: rgba(0, 255, 255, 0.1);
+    transform: translateX(5px);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.info-label {
+    color: var(--neon-cyan);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 14px;
+}
+
+.info-value {
+    color: #fff;
+    font-weight: 900;
+    font-size: 18px;
+    font-family: 'Orbitron', monospace;
+}
+
+.total-row {
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 2px solid var(--neon-magenta);
+    background: rgba(255, 0, 255, 0.1) !important;
+    border-left-color: var(--neon-magenta);
+}
+
+.total-row .info-value {
+    color: var(--neon-yellow);
+    font-size: 32px;
+    text-shadow: 0 0 10px var(--neon-yellow);
+    animation: numberPulse 2s ease-in-out infinite;
+}
+
+@keyframes numberPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Payment Method Selection */
+.payment-method {
+    background: rgba(10, 14, 39, 0.9);
+    border: 3px solid var(--neon-magenta);
+    padding: 35px;
+    margin-bottom: 40px;
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.5), inset 0 0 30px rgba(255, 0, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out 0.4s backwards;
+}
+
+.payment-method h3 {
+    color: var(--neon-cyan);
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    text-shadow: var(--glow-cyan);
+    text-align: center;
+}
+
+.method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.method-card {
+    background: rgba(0, 255, 255, 0.05);
+    border: 2px solid var(--neon-cyan);
+    padding: 25px;
+    text-align: center;
+    clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.method-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s;
+}
+
+.method-card:hover::before {
+    animation: scanline 1s linear infinite;
+}
+
+.method-card:hover {
+    border-color: var(--neon-magenta);
+    background: rgba(255, 0, 255, 0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+
+.method-card.selected {
+    background: rgba(0, 255, 0, 0.1);
+    border-color: var(--neon-green);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+}
+
+.method-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px currentColor);
+}
+
+.method-name {
+    color: #fff;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 14px;
+    font-family: 'Orbitron', monospace;
+}
+
+/* Payment Form */
+.payment-form {
+    position: relative;
+    z-index: 1;
+}
+
+.form-section {
+    margin-bottom: 25px;
+}
+
+.form-section label {
+    display: block;
+    color: var(--neon-cyan);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 5px var(--neon-cyan);
+}
+
+.form-section input {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 2px solid var(--neon-cyan);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    transition: all 0.3s ease;
+}
+
+.form-section input:focus {
+    outline: none;
+    border-color: var(--neon-magenta);
+    background: rgba(255, 0, 255, 0.1);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+    transform: translateX(5px);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+/* Payment Button */
+.payment-actions {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+    animation: fadeInUp 0.8s ease-out 0.6s backwards;
+}
+
+.btn-cyber {
+    flex: 1;
+    padding: 20px 40px;
+    font-size: 18px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    border: none;
+    cursor: pointer;
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+    transition: all 0.3s ease;
+    font-family: 'Orbitron', monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-cyber::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s;
+}
+
+.btn-cyber:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: var(--neon-cyan);
+    color: var(--cyber-dark);
+    box-shadow: 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-cyan);
+}
+
+.btn-primary:hover {
+    background: var(--neon-magenta);
+    color: #fff;
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 0 40px var(--neon-magenta), 0 0 80px var(--neon-magenta);
+}
+
+.btn-secondary {
+    background: rgba(255, 0, 0, 0.2);
+    border: 2px solid var(--neon-red);
+    color: var(--neon-red);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 0, 0, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+}
+
+/* Processing Animation */
+.processing-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 14, 39, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.processing-overlay.active {
+    display: flex;
+}
+
+.processing-content {
+    text-align: center;
+}
+
+.cyber-loader {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 40px;
+    position: relative;
+}
+
+.cyber-loader::before,
+.cyber-loader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 4px solid transparent;
+    border-radius: 50%;
+    animation: spin 1.5s linear infinite;
+}
+
+.cyber-loader::before {
+    border-top-color: var(--neon-cyan);
+    border-right-color: var(--neon-magenta);
+}
+
+.cyber-loader::after {
+    border-bottom-color: var(--neon-yellow);
+    border-left-color: var(--neon-green);
+    animation-direction: reverse;
+    animation-duration: 1s;
+}
+
+.processing-text {
+    color: var(--neon-cyan);
+    font-size: 28px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: var(--glow-cyan);
+    font-family: 'Orbitron', monospace;
+    animation: neonFlicker 2s infinite;
+}
+
+.processing-subtext {
+    color: var(--neon-magenta);
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 15px;
+    letter-spacing: 2px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Security Badge */
+.security-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(0, 255, 0, 0.1);
+    border: 2px solid var(--neon-green);
+    margin-top: 30px;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+.security-badge::before {
+    content: '🔒';
+    font-size: 24px;
+    filter: drop-shadow(0 0 10px var(--neon-green));
+}
+
+.security-text {
+    color: var(--neon-green);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .payment-info,
+    .payment-method {
+        padding: 25px 20px;
+    }
+    
+    .payment-header h2 {
+        font-size: 32px;
+    }
+    
+    .method-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-actions {
+        flex-direction: column;
+    }
+    
+    .total-row .info-value {
+        font-size: 24px;
+    }
+}
+</style>
+
+<div class="payment-container">
+    <!-- Header -->
+    <div class="payment-header">
+        <h2>⚡ PAYMENT ⚡</h2>
+        <p class="payment-subtitle">// SECURE TRANSACTION PROTOCOL //</p>
+    </div>
+
+    <!-- Payment Info -->
+    <div class="payment-info">
+        <h3>📊 BOOKING DETAILS</h3>
+        <div class="info-row">
+            <span class="info-label">Booking ID:</span>
+            <span class="info-value">#{{ booking_id }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Check-in Date:</span>
+            <span class="info-value">{{ start_date|default('2025-11-10') }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Check-out Date:</span>
+            <span class="info-value">{{ end_date|default('2025-11-15') }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Number of Nights:</span>
+            <span class="info-value">{{ nights|default('5') }}</span>
+        </div>
+        <div class="info-row total-row">
+            <span class="info-label">TOTAL AMOUNT:</span>
+            <span class="info-value">${{ total }}</span>
+        </div>
+    </div>
+
+    <!-- Payment Method -->
+    <div class="payment-method">
+        <h3>💳 SELECT PAYMENT METHOD</h3>
+        <div class="method-grid">
+            <div class="method-card selected" data-method="credit">
+                <div class="method-icon">💳</div>
+                <div class="method-name">Credit Card</div>
+            </div>
+            <div class="method-card" data-method="debit">
+                <div class="method-icon">🏦</div>
+                <div class="method-name">Debit Card</div>
+            </div>
+            <div class="method-card" data-method="crypto">
+                <div class="method-icon">₿</div>
+                <div class="method-name">Cryptocurrency</div>
+            </div>
+        </div>
+
+        <!-- Card Details Form -->
+        <form method="post" action="{{ url_for('pay') }}" id="paymentForm" class="payment-form">
+            <input type="hidden" name="booking_id" value="{{ booking_id }}">
+            
+            <div class="form-section">
+                <label for="cardNumber">CARD NUMBER</label>
+                <input type="text" id="cardNumber" placeholder="**** **** **** ****" maxlength="19" required>
+            </div>
+            
+            <div class="form-section">
+                <label for="cardName">CARDHOLDER NAME</label>
+                <input type="text" id="cardName" placeholder="JOHN DOE" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-section">
+                    <label for="expiry">EXPIRY DATE</label>
+                    <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required>
+                </div>
+                <div class="form-section">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" placeholder="***" maxlength="3" required>
+                </div>
+            </div>
+
+            <div class="security-badge">
+                <span class="security-text">🛡️ 256-BIT ENCRYPTION ENABLED</span>
+            </div>
+
+            <div class="payment-actions">
+                <button type="submit" class="btn-cyber btn-primary">
+                    ⚡ PROCESS PAYMENT ⚡
+                </button>
+                <a href="{{ url_for('index') }}" class="btn-cyber btn-secondary">
+                    ✗ CANCEL
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Processing Overlay -->
+<div class="processing-overlay" id="processingOverlay">
+    <div class="processing-content">
+        <div class="cyber-loader"></div>
+        <div class="processing-text">PROCESSING...</div>
+        <div class="processing-subtext">// Securing Transaction //</div>
+    </div>
+</div>
+
+<script>
+// Payment method selection
+document.querySelectorAll('.method-card').forEach(card => {
+    card.addEventListener('click', function() {
+        document.querySelectorAll('.method-card').forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+    });
+});
+
+// Card number formatting
+document.getElementById('cardNumber').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s/g, '');
+    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+    e.target.value = formattedValue;
+});
+
+// Expiry date formatting
+document.getElementById('expiry').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    }
+    e.target.value = value;
+});
+
+// CVV validation
+document.getElementById('cvv').addEventListener('input', function(e) {
+    e.target.value = e.target.value.replace(/\D/g, '');
+});
+
+// Form submission
+document.getElementById('paymentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Show processing overlay
+    document.getElementById('processingOverlay').classList.add('active');
+    
+    // Simulate processing delay
+    setTimeout(() => {
+        e.target.submit();
+    }, 2000);
+});
+
+// Add scanlines if not exists
+if (!document.querySelector('.scanlines')) {
+    const scanlines = document.createElement('div');
+    scanlines.className = 'scanlines';
+    document.body.prepend(scanlines);
+}
+</script>
+
+{% endblock %}

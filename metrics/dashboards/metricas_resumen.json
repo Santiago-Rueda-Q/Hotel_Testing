@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-11-05T19:44:33.914018",
+  "timestamp": "2025-11-05T21:06:12.093447",
   "metricas": {
     "cobertura_pruebas": 96.0,
     "tasa_defectos": 50.0,
     "densidad_criticos": 8.8,
     "tasa_resolucion": 56.6,
-    "tiempo_promedio_dias": 4.02,
+    "tiempo_promedio_dias": 3.97,
     "eficiencia_pruebas": 95.0,
     "tasa_retest": 25.0,
     "indice_estabilidad": 80,

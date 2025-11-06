@@ -22,7 +22,6 @@
             overflow-x: hidden;
         }
 
-        /* Cyberpunk grid background */
         body::before {
             content: '';
             position: fixed;
@@ -42,7 +41,6 @@
             100% { transform: translate(40px, 40px); }
         }
 
-        /* Neon glow effects */
         body::after {
             content: '';
             position: fixed;
@@ -70,7 +68,6 @@
             z-index: 1;
         }
 
-        /* Cyberpunk Header */
         .header {
             text-align: center;
             margin-bottom: 60px;
@@ -163,7 +160,6 @@
             text-shadow: 0 0 10px #0ff;
         }
 
-        /* Neon Metrics Grid */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -257,7 +253,6 @@
             color: #0ff;
         }
 
-        /* Holographic Charts */
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -307,7 +302,6 @@
             z-index: 1;
         }
 
-        /* Cyberpunk Criteria Section */
         .criterios-section {
             background: rgba(10, 14, 39, 0.95);
             border: 3px solid;
@@ -430,7 +424,6 @@
             letter-spacing: 2px;
         }
 
-        /* Epic Status Badge */
         .status-badge {
             margin-top: 40px;
             padding: 35px;
@@ -484,7 +477,6 @@
                 0 0 40px #f00;
         }
 
-        /* Scanlines effect */
         .scanlines {
             position: fixed;
             top: 0;
@@ -507,7 +499,6 @@
             100% { transform: translateY(10px); }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .metrics-grid {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -538,7 +529,7 @@
     <div class="container">
         <div class="header">
             <h1>⚡ CYBER METRICS ⚡</h1>
-            <p class="timestamp">// HOTEL SYSTEM // 2025-11-05 19:44:33</p>
+            <p class="timestamp">// HOTEL SYSTEM // 2025-11-05 21:06:12</p>
         </div>
         
         <div class="metrics-grid">
@@ -564,7 +555,7 @@
             </div>
             <div class="metric-card">
                 <h3>T.Promedio</h3>
-                <div class="value">4.02<span class="unit">d</span></div>
+                <div class="value">3.97<span class="unit">d</span></div>
             </div>
             <div class="metric-card">
                 <h3>Retest</h3>
@@ -596,35 +587,28 @@
             <p>// CUMPLIDOS: 6/8 (75.0%) //</p>
             
             <div class="criterio pass">
-                <span>01. COBERTURA >= 90%</span>
+                <span>1. COBERTURA DE PRUEBAS >= 90%</span>
                 <span>✓ PASS</span>
-            </div>
-            <div class="criterio fail">
-                <span>02. RESOLUCIÓN >= 85%</span>
+            </div><div class="criterio fail">
+                <span>2. TASA DE RESOLUCIÓN >= 85%</span>
                 <span>✗ FAIL</span>
-            </div>
-            <div class="criterio pass">
-                <span>03. SIN CRÍTICOS ABIERTOS</span>
+            </div><div class="criterio pass">
+                <span>3. SIN DEFECTOS CRÍTICOS ABIERTOS</span>
                 <span>✓ PASS</span>
-            </div>
-            <div class="criterio pass">
-                <span>04. HIGH <= 2 ABIERTOS</span>
+            </div><div class="criterio pass">
+                <span>4. DEFECTOS HIGH <= 2 ABIERTOS</span>
                 <span>✓ PASS</span>
-            </div>
-            <div class="criterio pass">
-                <span>05. T.RESOLUCIÓN <= 5 DÍAS</span>
+            </div><div class="criterio pass">
+                <span>5. TIEMPO PROMEDIO RESOLUCIÓN <= 5 DÍAS</span>
                 <span>✓ PASS</span>
-            </div>
-            <div class="criterio pass">
-                <span>06. EFICIENCIA >= 80%</span>
+            </div><div class="criterio pass">
+                <span>6. EFICIENCIA DE PRUEBAS >= 80%</span>
                 <span>✓ PASS</span>
-            </div>
-            <div class="criterio pass">
-                <span>07. ESTABILIDAD >= 70</span>
+            </div><div class="criterio pass">
+                <span>7. ÍNDICE DE ESTABILIDAD >= 70</span>
                 <span>✓ PASS</span>
-            </div>
-            <div class="criterio fail">
-                <span>08. TENDENCIA DESCENDENTE</span>
+            </div><div class="criterio fail">
+                <span>8. TENDENCIA DE DEFECTOS DESCENDENTE</span>
                 <span>✗ FAIL</span>
             </div>
             
