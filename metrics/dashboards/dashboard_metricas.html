@@ -1,0 +1,188 @@
+
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard de Métricas - Testing Hotel</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 20px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 10px;
+                padding: 30px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            }
+            h1 {
+                color: #333;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            .timestamp {
+                text-align: center;
+                color: #666;
+                margin-bottom: 30px;
+            }
+            .metrics-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+            .metric-card {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            .metric-card h3 {
+                margin: 0 0 10px 0;
+                font-size: 14px;
+                opacity: 0.9;
+            }
+            .metric-card .value {
+                font-size: 32px;
+                font-weight: bold;
+                margin: 10px 0;
+            }
+            .metric-card .unit {
+                font-size: 18px;
+                opacity: 0.8;
+            }
+            .charts-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+            .chart-container {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+            }
+            .chart-container img {
+                max-width: 100%;
+                border-radius: 4px;
+            }
+            .criterios-section {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                margin-top: 30px;
+            }
+            .criterios-section h2 {
+                color: #333;
+                margin-top: 0;
+            }
+            .criterio {
+                padding: 12px;
+                margin: 8px 0;
+                border-radius: 4px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .criterio.pass {
+                background: #d4edda;
+                border-left: 4px solid #28a745;
+            }
+            .criterio.fail {
+                background: #f8d7da;
+                border-left: 4px solid #dc3545;
+            }
+            .status-badge {
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+                margin-top: 20px;
+            }
+            .status-badge.approved {
+                background: #d4edda;
+                color: #155724;
+            }
+            .status-badge.rejected {
+                background: #f8d7da;
+                color: #721c24;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>📊 Dashboard de Métricas de Testing</h1>
+            <p class="timestamp">Sistema de Reservas de Hotel | Generado: 2025-11-05 19:44:33</p>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>Cobertura de Pruebas</h3>
+                    <div class="value">96.0<span class="unit">%</span></div>
+                </div>
+                <div class="metric-card">
+                    <h3>Tasa de Resolución</h3>
+                    <div class="value">56.6<span class="unit">%</span></div>
+                </div>
+                <div class="metric-card">
+                    <h3>Eficiencia de Pruebas</h3>
+                    <div class="value">95.0<span class="unit">%</span></div>
+                </div>
+                <div class="metric-card">
+                    <h3>Índice de Estabilidad</h3>
+                    <div class="value">80<span class="unit">%</span></div>
+                </div>
+                <div class="metric-card">
+                    <h3>Densidad Críticos</h3>
+                    <div class="value">8.8<span class="unit">%</span></div>
+                </div>
+                <div class="metric-card">
+                    <h3>Tiempo Promedio</h3>
+                    <div class="value">4.02<span class="unit">días</span></div>
+                </div>
+                <div class="metric-card">
+                    <h3>Tasa de Retest</h3>
+                    <div class="value">25.0<span class="unit">%</span></div>
+                </div>
+                <div class="metric-card">
+                    <h3>Tendencia</h3>
+                    <div class="value" style="font-size: 20px;">ESTABLE ~</div>
+                </div>
+            </div>
+            
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <img src="../figs/trend.png" alt="Tendencia">
+                </div>
+                <div class="chart-container">
+                    <img src="../figs/severity.png" alt="Severidad">
+                </div>
+                <div class="chart-container">
+                    <img src="../figs/status.png" alt="Estado">
+                </div>
+                <div class="chart-container">
+                    <img src="../figs/semaforo.png" alt="Semáforo">
+                </div>
+            </div>
+            
+            <div class="criterios-section">
+                <h2>🎯 Criterios de Salida (Exit Criteria)</h2>
+                <p><strong>Cumplidos: 6/8 (75.0%)</strong></p>
+                <div class="criterio pass"><span>1. Cobertura de pruebas >= 90%</span><span>✓ PASS</span></div><div class="criterio fail"><span>2. Tasa de resolución >= 85%</span><span>✗ FAIL</span></div><div class="criterio pass"><span>3. Sin defectos críticos abiertos</span><span>✓ PASS</span></div><div class="criterio pass"><span>4. Defectos high <= 2 abiertos</span><span>✓ PASS</span></div><div class="criterio pass"><span>5. Tiempo promedio resolución <= 5 días</span><span>✓ PASS</span></div><div class="criterio pass"><span>6. Eficiencia de pruebas >= 80%</span><span>✓ PASS</span></div><div class="criterio pass"><span>7. Índice de estabilidad >= 70</span><span>✓ PASS</span></div><div class="criterio fail"><span>8. Tendencia de defectos descendente</span><span>✗ FAIL</span></div>
+                
+                <div class="status-badge approved">
+                    ✓ APROBADO PARA PRODUCCIÓN
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+    
