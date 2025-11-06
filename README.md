@@ -169,5 +169,5 @@ python sistema_metricas.py
 
 ### Salida del Sistema del dashboard
 
-<img width="851" height="733" alt="image" src="https://github.com/user-attachments/assets/d6ef8826-f3fb-438f-8568-31108bd7c399" />
+<img width="1158" height="927" alt="image" src="https://github.com/user-attachments/assets/329fe68c-9b4d-4d83-9b53-31d4245093ec" />
 <img width="808" height="531" alt="image" src="https://github.com/user-attachments/assets/d3fe7315-aae0-4718-9162-eba08b24ea3a" />
